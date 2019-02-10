@@ -1,27 +1,36 @@
 import axios from 'axios'
 import config from './Utils/config'
 
-function getAxios(url) {
-    axios({
-        method:'get',
-        url: url,
-        responseType:'stream'
-    })
-    .then(function (response) {
-        return response
-    });
+async function getExchangeRate() {
+    try {
+        let url = 'https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD,SGD,PHP,JPY,EUR'
+        const response = await axios(url)
+        return response.data
+    } catch (error) {
+        console.error(error);
+    }
 }
 
-function getLogs(){
-    let url = `http://api.etherscan.io/api?module=account&action=txlist&address=0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2&startblock=0&endblock=99999999&sort=asc&apikey=NRBKRGEHIURWGRFC7CSUM1PVPICNP6Y15Y`
-    // console.log(url)
-    axios({
-        method:'get',
-        url: url,
-    })
-    .then(function (response) {
-        console.log('res=====',response)
-    });
+async function getEthBalance(address){
+    try {
+        let url = `${config.URL}module=account&action=balance&address=${address}&tag=latest&apikey=${config.API_KEY}`
+        const ethBalance = await axios(url)
+        return ethBalance.data.result
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+async function getTxns(value){
+    try {
+        let url = `${config.URL}module=account&action=txlistinternal&address=${value}&startblock=0&endblock=99999999&page=1&offset=20&sort=asc&apikey=${config.API_KEY}`
+        const response = await axios(url)
+        console.log(response.data.result)
+        return response.data.result
+    } catch (error) {
+        console.error(error);
+    }
+    
 }
 
 function getBalance() {
@@ -49,8 +58,9 @@ function getETHPrice() {
 }
 
 export {
-    getAxios,
-    getLogs,
+    getExchangeRate,
+    getEthBalance,
+    getTxns,
     getBalance,
     getETHPrice
 };

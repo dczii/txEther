@@ -1,32 +1,50 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
+import _ from 'lodash'
 
-class App extends Component {
-  render() {
+
+import { formattedCurrency, formatEth } from '../Utils/dataUtils'
+
+const unit = require('ethjs-unit');
+
+class Header extends Component {
+    componentDidUpdate() {
+    }
+
+    render() {
+    let { ethBalance, rate, currency } = this.props
+    let convertedEth = formatEth(ethBalance)
+    let balance = convertedEth * _.get(rate, currency)
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>HEADER</Text>
+        <Text style={styles.title}>MY PORTFOLIO</Text>
+        {_.isEmpty(ethBalance) ? 
+            <Text style={styles.content}>Enter an Ethereum address to get started</Text>
+        :
+        <Text style={styles.content}>{formattedCurrency(balance)}</Text>
+        }
       </View>
     );
   }
 }
 
-export default App
+export default Header
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#000',
-    height: 100
+    paddingTop: 10,
+    height: 100,
+    alignItems: 'center'
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-    color: "#FFF"
+  title: {
+    fontSize: 28,
+    color: '#FFF',
+    fontWeight: 'bold',
+    marginBottom: 10
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+  content: {
+      fontSize: 16,
+      color: '#FFF'
+  }
 });
