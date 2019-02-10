@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
 import _ from 'lodash'
 
-
 import { formattedCurrency, formatEth } from '../Utils/dataUtils'
 
 const unit = require('ethjs-unit');

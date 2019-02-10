@@ -29,6 +29,7 @@ class App extends Component {
     this.setExchangeRate = this.setExchangeRate.bind(this)
     this.getAddressLogs = this.getAddressLogs.bind(this)
     this.showLoading = this.showLoading.bind(this)
+    this.onSelectTxn = this.onSelectTxn.bind(this)
   }
   componentDidMount() {
     this.setExchangeRate()
@@ -63,6 +64,10 @@ class App extends Component {
     this.setState({ loading: value})
   }
 
+  onSelectTxn = value => {
+    console.log(value)
+  }
+
   render() {
     let {
       ethAddress,
@@ -90,11 +95,13 @@ class App extends Component {
 
         {!ethBalance && addressTxns ?
           <InputAddress 
-            onContinue={(value) => this.onEnterAddress('0x72ACB15929D0290a433fbdD9C50AD3A53bdA8544')}
+            onContinue={(value) => this.onEnterAddress('0xdcD6968c5E40a6b26cABCa51E818b0404082C156')}
           />
         :
           <Logs 
+            ethAddress={ethAddress}
             ethData={addressTxns}
+            onSelectTxn={data => this.onSelectTxn(data)}
           />
         }
         
@@ -118,7 +125,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: '100%',
     width: '100%',
-    backgroundColor: 'rgba(255,255,255,0.1)'
+    backgroundColor: 'transparent'
   }
 
 });
