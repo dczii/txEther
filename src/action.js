@@ -25,7 +25,6 @@ async function getTxns(value){
     try {
         let url = `${config.URL}module=account&action=txlist&address=${value}&startblock=0&endblock=99999999&page=1&offset=50&sort=asc&apikey=${config.API_KEY}`
         const response = await axios(url)
-        console.log(response.data.result)
         return response.data.result
     } catch (error) {
         console.error(error);

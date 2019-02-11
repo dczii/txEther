@@ -27,7 +27,13 @@ class inputAddress extends Component {
             placeholder='Enter Address'
             placeholderTextColor='#d6d6d6'
         />
-        
+
+        {this.props.showError ? 
+          <View style={styles.errorContainer}>
+            <Text style={styles.textError}>Enter Valid Ethereum Address</Text>
+          </View>
+        : null}
+
         <TouchableOpacity style={styles.buttonContainer} onPress={() => this.props.onContinue(this.state.input)}>
           <Text style={styles.buttonText}>CONTINUE</Text>
         </TouchableOpacity>
@@ -65,5 +71,20 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderBottomColor: '#a0a0a0',
         borderBottomWidth: 2,
+    },
+    errorContainer: {
+      alignSelf: 'center',
+      justifyContent: 'center',
+      padding: 20,
+      backgroundColor: '#ff0505',
+      borderWidth: 2,
+      borderColor: '#FFF',
+      marginTop: 10,
+      borderRadius: 5,
+      width: '80%',
+    },
+    textError: {
+      fontWeight: 'bold',
+      color: '#FFF'
     }
 });

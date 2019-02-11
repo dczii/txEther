@@ -9,7 +9,7 @@ import { formatEth } from '../Utils/dataUtils'
 class Logs extends Component {
     render() {
         let { ethData, ethAddress, onSelectTxn } = this.props
-        console.log(ethData)
+
         return (
             <ScrollView>
                 <List>
@@ -29,7 +29,7 @@ class Logs extends Component {
                                 </Left>
                                 <Body style={styles.borderStyle}>
                                     <Text style={styles.ethValueStyle}>
-                                        {`${formatEth(Number(data.value))} ETH`}
+                                        {`${formatEth(data.value)} ETH`}
                                     </Text>
                                     <Text style={styles.labelStyle}>
                                         {received ? 'RECEIVED FROM' : 'SENT TO'}

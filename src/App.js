@@ -10,7 +10,7 @@ import {
 import { Spinner } from 'native-base';
 import _ from 'lodash'
 
-import { Header, InputAddress, Logs } from './Components'
+import { Header, InputAddress, Logs, Modal } from './Components'
 import { getExchangeRate, getEthBalance, getTxns } from './action'
 
 class App extends Component {
@@ -18,11 +18,14 @@ class App extends Component {
     super(props)
     this.state = {
       loading: false,
+      showError: false,
       ethAddress: '',
       ethBalance: 0,
       currency: 'USD',
       rates: {},
-      addressTxns: []
+      addressTxns: [],
+      showModal: false,
+      selectedTxn: {}
     }
 
     this.onEnterAddress = this.onEnterAddress.bind(this)
@@ -31,6 +34,7 @@ class App extends Component {
     this.showLoading = this.showLoading.bind(this)
     this.onSelectTxn = this.onSelectTxn.bind(this)
     this.onChangeCurrency = this.onChangeCurrency.bind(this)
+    this.onCloseModal = this.onCloseModal.bind(this)
   }
 
   componentDidMount() {
@@ -40,7 +44,6 @@ class App extends Component {
   setExchangeRate = async () => {
     this.showLoading(true)
     let data = await getExchangeRate()
-    console.log(data)
     this.setState({
       rates: data
     }, () => this.showLoading(false))
@@ -49,10 +52,16 @@ class App extends Component {
   onEnterAddress = async (value) => {
     this.showLoading(true)
     let ethBalance = await getEthBalance(value)
-    this.setState({
-      ethAddress: value,
-      ethBalance: ethBalance
-    }, () => this.getAddressLogs(value))
+
+    if (_.includes(ethBalance, 'Error')) {
+      this.setState({ showError: true }, () => this.getAddressLogs(value))
+    } else {
+      this.setState({
+        showError: false,
+        ethAddress: value,
+        ethBalance: ethBalance
+      }, () => this.getAddressLogs(value))
+    }
   }
 
   getAddressLogs = async (value) => {
@@ -67,12 +76,15 @@ class App extends Component {
   }
 
   onSelectTxn = (value) => {
-    console.log(value)
+    this.setState({ showModal: true, selectedTxn: value })
   }
 
   onChangeCurrency = (value) => {
-    // console.log(value)
     this.setState({ currency: value})
+  }
+
+  onCloseModal = () => {
+    this.setState({ showModal: !this.state.showModal })
   }
 
   render() {
@@ -82,7 +94,10 @@ class App extends Component {
       currency,
       ethBalance,
       loading,
-      addressTxns
+      addressTxns,
+      selectedTxn,
+      showModal,
+      showError
     } = this.state
 
     return (
@@ -103,7 +118,8 @@ class App extends Component {
 
         {!ethBalance && addressTxns ?
           <InputAddress 
-            onContinue={(value) => this.onEnterAddress('0xdcD6968c5E40a6b26cABCa51E818b0404082C156')}
+            onContinue={(value) => this.onEnterAddress(value)}
+            showError={showError}
           />
         :
           <Logs 
@@ -112,6 +128,14 @@ class App extends Component {
             onSelectTxn={data => this.onSelectTxn(data)}
           />
         }
+
+        <Modal 
+          visible={showModal}
+          selectedTxn={selectedTxn}
+          onCloseModal={this.onCloseModal}
+          rates={rates}
+          currency={currency}
+        />
         
       </SafeAreaView>
     );
