@@ -21,7 +21,7 @@ class App extends Component {
       ethAddress: '',
       ethBalance: 0,
       currency: 'USD',
-      rate: {},
+      rates: {},
       addressTxns: []
     }
 
@@ -30,7 +30,9 @@ class App extends Component {
     this.getAddressLogs = this.getAddressLogs.bind(this)
     this.showLoading = this.showLoading.bind(this)
     this.onSelectTxn = this.onSelectTxn.bind(this)
+    this.onChangeCurrency = this.onChangeCurrency.bind(this)
   }
+
   componentDidMount() {
     this.setExchangeRate()
   }
@@ -40,7 +42,7 @@ class App extends Component {
     let data = await getExchangeRate()
     console.log(data)
     this.setState({
-      rate: data
+      rates: data
     }, () => this.showLoading(false))
   }
 
@@ -60,18 +62,23 @@ class App extends Component {
     }, () => this.showLoading(false))
   }
 
-  showLoading = value => {
+  showLoading = (value) => {
     this.setState({ loading: value})
   }
 
-  onSelectTxn = value => {
+  onSelectTxn = (value) => {
     console.log(value)
+  }
+
+  onChangeCurrency = (value) => {
+    // console.log(value)
+    this.setState({ currency: value})
   }
 
   render() {
     let {
       ethAddress,
-      rate,
+      rates,
       currency,
       ethBalance,
       loading,
@@ -84,8 +91,9 @@ class App extends Component {
 
         <Header 
           ethBalance={ethBalance}
-          rate={rate}
+          rates={rates}
           currency={currency}
+          onChangeCurrency={this.onChangeCurrency}
         />
 
         {loading && <View style={styles.spinner}>
