@@ -1,4 +1,5 @@
 # txEther
+Ethereum Balance and Transaction Checker
 ## Installation
 ```
 npm install
