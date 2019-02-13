@@ -8,12 +8,19 @@ import { formatEth } from '../Utils/dataUtils'
 
 class Logs extends Component {
     render() {
-        let { ethData, ethAddress, onSelectTxn } = this.props
+        let { ethData, ethAddress, onSelectTxn, txnType } = this.props
+        let filterTxn = ethData
+        if (txnType === 'in') {
+            filterTxn = _.filter(ethData, val => Number(val.to) === Number(ethAddress))
+        } else if (txnType === 'out') {
+            filterTxn = _.filter(ethData, val => Number(val.from) === Number(ethAddress))
+        }
 
+        console.log(filterTxn)
         return (
             <ScrollView>
                 <List>
-                    {_.map(ethData, (data, idx) => {
+                    {_.map(filterTxn, (data, idx) => {
                         let received = Number(ethAddress) === Number(data.from)
                         let date = new Date(Number(data.timeStamp)*1000)
                         return (
@@ -32,7 +39,7 @@ class Logs extends Component {
                                         {`${formatEth(data.value)} ETH`}
                                     </Text>
                                     <Text style={styles.labelStyle}>
-                                        {received ? 'RECEIVED FROM' : 'SENT TO'}
+                                        {!received ? 'RECEIVED FROM' : 'SENT TO'}
                                     </Text>
                                     <Text numberOfLines={1} style={styles.addressStyle}>
                                         {received ? data.to : data.from}

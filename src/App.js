@@ -4,7 +4,7 @@ import {
   StyleSheet,
   Text,
   View,
-  ActivityIndicator,
+  TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
 import { Spinner } from 'native-base';
@@ -19,6 +19,7 @@ class App extends Component {
     this.state = {
       loading: false,
       showError: false,
+      txnType: '',
       ethAddress: '',
       ethBalance: 0,
       currency: 'USD',
@@ -35,6 +36,7 @@ class App extends Component {
     this.onSelectTxn = this.onSelectTxn.bind(this)
     this.onChangeCurrency = this.onChangeCurrency.bind(this)
     this.onCloseModal = this.onCloseModal.bind(this)
+    this.changeFilter = this.changeFilter.bind(this)
   }
 
   componentDidMount() {
@@ -87,6 +89,10 @@ class App extends Component {
     this.setState({ showModal: !this.state.showModal })
   }
 
+  changeFilter = (value) => {
+    this.setState({ txnType: value })
+  }
+
   render() {
     let {
       ethAddress,
@@ -97,7 +103,8 @@ class App extends Component {
       addressTxns,
       selectedTxn,
       showModal,
-      showError
+      showError,
+      txnType
     } = this.state
 
     return (
@@ -116,6 +123,27 @@ class App extends Component {
             color="#0000ff"/>
         </View>}
 
+        <View style={styles.filterContainer}>
+          <Text style={styles.filterText}>
+            Filter:
+          </Text>
+          <TouchableOpacity style={styles.btnContainer} onPress={() => this.changeFilter('')}>
+            <Text style={_.assign({}, styles.filterText, {fontWeight: txnType === '' ? 'bold' : 'normal'})}>
+              All Txn
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.btnContainer} onPress={() => this.changeFilter('in')}>
+            <Text style={_.assign({}, styles.filterText, {fontWeight: txnType === 'in' ? 'bold' : 'normal'})}>
+              Internal Txn
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.btnContainer} onPress={() => this.changeFilter('out')}>
+            <Text style={_.assign({}, styles.filterText, {fontWeight: txnType === 'out' ? 'bold' : 'normal'})}>
+              Outgoing Txn
+            </Text>
+          </TouchableOpacity>
+        </View>
+
         {!ethBalance && addressTxns ?
           <InputAddress 
             onContinue={(value) => this.onEnterAddress(value)}
@@ -126,6 +154,7 @@ class App extends Component {
             ethAddress={ethAddress}
             ethData={addressTxns}
             onSelectTxn={data => this.onSelectTxn(data)}
+            txnType={txnType}
           />
         }
 
@@ -150,6 +179,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: '#F5FCFF',
   },
+  filterContainer: {
+    flexDirection: 'row',
+    backgroundColor: '#898989',
+    paddingVertical: 5,
+    paddingHorizontal: 10
+  },
   spinner: {
     position: 'absolute',
     zIndex: 999999,
@@ -158,6 +193,11 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%',
     backgroundColor: 'transparent'
+  },
+  btnContainer: {
+    marginLeft: 5
+  },
+  filterText: {
+    color: '#FFF'
   }
-
 });
