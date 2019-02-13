@@ -123,6 +123,7 @@ class App extends Component {
             color="#0000ff"/>
         </View>}
 
+        {!ethBalance && addressTxns ? null :
         <View style={styles.filterContainer}>
           <Text style={styles.filterText}>
             Filter:
@@ -142,7 +143,7 @@ class App extends Component {
               Outgoing Txn
             </Text>
           </TouchableOpacity>
-        </View>
+        </View>}
 
         {!ethBalance && addressTxns ?
           <InputAddress 
