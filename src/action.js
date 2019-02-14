@@ -21,9 +21,10 @@ async function getEthBalance(address){
     }
 }
 
-async function getTxns(value){
+async function getTxns(value, sortDate){
     try {
-        let url = `${config.URL}module=account&action=txlist&address=${value}&startblock=0&endblock=99999999&page=1&offset=50&sort=asc&apikey=${config.API_KEY}`
+        let date = sortDate ? sortDate : 'asc'
+        let url = `${config.URL}module=account&action=txlist&address=${value}&startblock=0&endblock=99999999&page=1&offset=50&sort=${date}&apikey=${config.API_KEY}`
         const response = await axios(url)
         return response.data.result
     } catch (error) {

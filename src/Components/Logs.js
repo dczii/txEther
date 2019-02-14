@@ -8,7 +8,7 @@ import { formatEth } from '../Utils/dataUtils'
 
 class Logs extends Component {
     render() {
-        let { ethData, ethAddress, onSelectTxn, txnType } = this.props
+        let { ethData, ethAddress, onSelectTxn, txnType, sortBy } = this.props
         let filterTxn = ethData
         if (txnType === 'in') {
             filterTxn = _.filter(ethData, val => Number(val.to) === Number(ethAddress))
@@ -16,11 +16,16 @@ class Logs extends Component {
             filterTxn = _.filter(ethData, val => Number(val.from) === Number(ethAddress))
         }
 
+        let sortedData = filterTxn
+        let transformData = []
+        if(sortBy === 'amount') {
+            sortedData = _.sortBy(filterTxn, 'value').reverse()
+        } 
         console.log(filterTxn)
         return (
             <ScrollView>
                 <List>
-                    {_.map(filterTxn, (data, idx) => {
+                    {_.map(sortedData, (data, idx) => {
                         let received = Number(ethAddress) === Number(data.from)
                         let date = new Date(Number(data.timeStamp)*1000)
                         return (

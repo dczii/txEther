@@ -26,7 +26,8 @@ class App extends Component {
       rates: {},
       addressTxns: [],
       showModal: false,
-      selectedTxn: {}
+      selectedTxn: {},
+      sortBy: ''
     }
 
     this.onEnterAddress = this.onEnterAddress.bind(this)
@@ -37,6 +38,7 @@ class App extends Component {
     this.onChangeCurrency = this.onChangeCurrency.bind(this)
     this.onCloseModal = this.onCloseModal.bind(this)
     this.changeFilter = this.changeFilter.bind(this)
+    this.applySort = this.applySort.bind(this)
   }
 
   componentDidMount() {
@@ -66,8 +68,8 @@ class App extends Component {
     }
   }
 
-  getAddressLogs = async (value) => {
-    let data = await getTxns(value)
+  getAddressLogs = async (value, sort) => {
+    let data = await getTxns(value, sort)
     this.setState({
       addressTxns: data
     }, () => this.showLoading(false))
@@ -92,6 +94,21 @@ class App extends Component {
   changeFilter = (value) => {
     this.setState({ txnType: value })
   }
+  
+  applySort = async (data) => {
+    this.showLoading(true)
+    let newData = ''
+    if (this.state.sortBy !== data) {
+      newData = data
+    }
+
+    if (newData === 'date') {
+      this.getAddressLogs(this.state.ethAddress, 'desc')
+    } else {
+      this.getAddressLogs(this.state.ethAddress)
+    }
+    this.setState({ sortBy: newData })
+  }
 
   render() {
     let {
@@ -104,7 +121,8 @@ class App extends Component {
       selectedTxn,
       showModal,
       showError,
-      txnType
+      txnType,
+      sortBy
     } = this.state
 
     return (
@@ -145,6 +163,23 @@ class App extends Component {
           </TouchableOpacity>
         </View>}
 
+        {!ethBalance && addressTxns ? null :
+        <View style={styles.filterContainer}>
+          <Text style={styles.filterText}>
+            Sort By:
+          </Text>
+          <TouchableOpacity style={styles.btnContainer} onPress={() => this.applySort('date')}>
+            <Text style={_.assign({}, styles.filterText, {fontWeight: sortBy === 'date' ? 'bold' : 'normal'})}>
+              Date
+            </Text>
+          </TouchableOpacity>
+          {/* <TouchableOpacity style={styles.btnContainer} onPress={() => this.applySort('amount')}>
+            <Text style={_.assign({}, styles.filterText, {fontWeight: sortBy === 'amount' ? 'bold' : 'normal'})}>
+              Amount
+            </Text>
+          </TouchableOpacity> */}
+        </View>}
+
         {!ethBalance && addressTxns ?
           <InputAddress 
             onContinue={(value) => this.onEnterAddress(value)}
@@ -156,6 +191,7 @@ class App extends Component {
             ethData={addressTxns}
             onSelectTxn={data => this.onSelectTxn(data)}
             txnType={txnType}
+            sortBy={sortBy}
           />
         }
 
