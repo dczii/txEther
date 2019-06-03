@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { useState } from 'react';
 import {
   Platform,
   StyleSheet,
@@ -8,38 +8,31 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-class inputAddress extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            input: ''
-        }
-    }
-    
-  render() {
-    return (
-      <View style={styles.container}>
+function inputAddress(props) {
+  let [input, handleInput] = useState('')
 
-        <TextInput
-            style={styles.inputStyle}
-            onChangeText={(text) => this.setState({ input: text })}
-            value={this.state.input}
-            placeholder='Enter Address'
-            placeholderTextColor='#d6d6d6'
-        />
+  return (
+    <View style={styles.container}>
 
-        {this.props.showError ? 
-          <View style={styles.errorContainer}>
-            <Text style={styles.textError}>Enter Valid Ethereum Address</Text>
-          </View>
-        : null}
+      <TextInput
+          style={styles.inputStyle}
+          onChangeText={(text) => handleInput(text)}
+          value={input}
+          placeholder='Enter Address'
+          placeholderTextColor='#d6d6d6'
+      />
 
-        <TouchableOpacity style={styles.buttonContainer} onPress={() => this.props.onContinue(this.state.input)}>
-          <Text style={styles.buttonText}>CONTINUE</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
+      {props.showError ? 
+        <View style={styles.errorContainer}>
+          <Text style={styles.textError}>Enter Valid Ethereum Address</Text>
+        </View>
+      : null}
+
+      <TouchableOpacity style={styles.buttonContainer} onPress={() => props.onContinue(input)}>
+        <Text style={styles.buttonText}>CONTINUE</Text>
+      </TouchableOpacity>
+    </View>
+  );
 }
 
 export default inputAddress
