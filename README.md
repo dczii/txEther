@@ -7,4 +7,4 @@ react-native run-ios
 ```
 
 ## Instruction
-You can get sample Ether address in (etherscan)[https://etherscan.io/accounts]
+You can get sample Ether address in [etherscan](https://etherscan.io/accounts)
