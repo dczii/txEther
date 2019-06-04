@@ -8,12 +8,14 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { Spinner } from 'native-base';
+import { connect } from 'react-redux';
 import _ from 'lodash'
 
-import { Header, InputAddress, Logs, Modal } from './Components'
-import { getExchangeRate, getEthBalance, getTxns } from './action'
+import { Header, InputAddress, Logs, Modal } from '../Components'
+import { getEthBalance, getTxns } from '../action'
+import { getExchangeRate, fetchEthBalance } from '../redux/action'
 
-class App extends Component {
+class Home extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -31,7 +33,6 @@ class App extends Component {
     }
 
     this.onEnterAddress = this.onEnterAddress.bind(this)
-    this.setExchangeRate = this.setExchangeRate.bind(this)
     this.getAddressLogs = this.getAddressLogs.bind(this)
     this.showLoading = this.showLoading.bind(this)
     this.onSelectTxn = this.onSelectTxn.bind(this)
@@ -42,19 +43,13 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.setExchangeRate()
-  }
-
-  setExchangeRate = async () => {
-    this.showLoading(true)
-    let data = await getExchangeRate()
-    this.setState({
-      rates: data
-    }, () => this.showLoading(false))
+    // this.setExchangeRate()
+    this.props.getExchangeRate()
   }
 
   onEnterAddress = async (value) => {
     this.showLoading(true)
+    this.props.fetchEthBalance(value)
     let ethBalance = await getEthBalance(value)
 
     if (_.includes(ethBalance, 'Error')) {
@@ -116,7 +111,6 @@ class App extends Component {
       rates,
       currency,
       ethBalance,
-      loading,
       addressTxns,
       selectedTxn,
       showModal,
@@ -124,6 +118,12 @@ class App extends Component {
       txnType,
       sortBy
     } = this.state
+
+    let {
+      loading,
+    } = this.props
+
+    console.log(this.props.global)
 
     return (
       <SafeAreaView style={styles.container}>
@@ -208,7 +208,17 @@ class App extends Component {
   }
 }
 
-export default App
+const mapStateToProps = store => {
+  return {
+    global: store.globalReducer,
+  };
+};
+
+const mapActionToProps = {
+  getExchangeRate,
+  fetchEthBalance
+};
+export default connect(mapStateToProps,mapActionToProps)(Home);
 
 const styles = StyleSheet.create({
   container: {

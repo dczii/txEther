@@ -20,7 +20,6 @@ function Logs(props) {
     if(sortBy === 'amount') {
         sortedData = _.sortBy(filterTxn, 'value').reverse()
     } 
-    console.log(filterTxn)
 
     return (
         <ScrollView>
