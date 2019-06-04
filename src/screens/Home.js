@@ -12,8 +12,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash'
 
 import { Header, InputAddress, Logs, Modal } from '../Components'
-import { getEthBalance, getTxns } from '../action'
-import { getExchangeRate, fetchEthBalance } from '../redux/action'
+import { getExchangeRate, fetchEthBalance, fetchTransactions } from '../redux/action'
 
 class Home extends Component {
   constructor(props) {
@@ -32,14 +31,6 @@ class Home extends Component {
       sortBy: ''
     }
 
-    this.onEnterAddress = this.onEnterAddress.bind(this)
-    this.getAddressLogs = this.getAddressLogs.bind(this)
-    this.showLoading = this.showLoading.bind(this)
-    this.onSelectTxn = this.onSelectTxn.bind(this)
-    this.onChangeCurrency = this.onChangeCurrency.bind(this)
-    this.onCloseModal = this.onCloseModal.bind(this)
-    this.changeFilter = this.changeFilter.bind(this)
-    this.applySort = this.applySort.bind(this)
   }
 
   componentDidMount() {
@@ -48,30 +39,12 @@ class Home extends Component {
   }
 
   onEnterAddress = async (value) => {
-    this.showLoading(true)
     this.props.fetchEthBalance(value)
-    let ethBalance = await getEthBalance(value)
 
-    if (_.includes(ethBalance, 'Error')) {
-      this.setState({ showError: true }, () => this.getAddressLogs(value))
-    } else {
-      this.setState({
-        showError: false,
-        ethAddress: value,
-        ethBalance: ethBalance
-      }, () => this.getAddressLogs(value))
-    }
-  }
-
-  getAddressLogs = async (value, sort) => {
-    let data = await getTxns(value, sort)
     this.setState({
-      addressTxns: data
-    }, () => this.showLoading(false))
-  }
-
-  showLoading = (value) => {
-    this.setState({ loading: value})
+      showError: false,
+      ethAddress: value,
+    })
   }
 
   onSelectTxn = (value) => {
@@ -91,16 +64,21 @@ class Home extends Component {
   }
   
   applySort = async (data) => {
-    this.showLoading(true)
     let newData = ''
     if (this.state.sortBy !== data) {
       newData = data
     }
 
     if (newData === 'date') {
-      this.getAddressLogs(this.state.ethAddress, 'desc')
+      this.props.fetchTransactions({
+        address: this.state.ethAddress,
+        sort: 'desc'
+      })
+
     } else {
-      this.getAddressLogs(this.state.ethAddress)
+      this.props.fetchTransactions({
+        address: this.state.ethAddress,
+      })
     }
     this.setState({ sortBy: newData })
   }
@@ -108,20 +86,20 @@ class Home extends Component {
   render() {
     let {
       ethAddress,
-      rates,
       currency,
-      ethBalance,
-      addressTxns,
       selectedTxn,
       showModal,
-      showError,
       txnType,
       sortBy
     } = this.state
 
     let {
       loading,
-    } = this.props
+      rates,
+      ethBalance,
+      showError,
+      addressTxns,
+    } = this.props.global
 
     console.log(this.props.global)
 
@@ -216,7 +194,8 @@ const mapStateToProps = store => {
 
 const mapActionToProps = {
   getExchangeRate,
-  fetchEthBalance
+  fetchEthBalance,
+  fetchTransactions
 };
 export default connect(mapStateToProps,mapActionToProps)(Home);
 

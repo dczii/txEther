@@ -7,3 +7,6 @@ export const SHOW_ERROR = 'SHOW_ERROR'
 
 export const GET_TXNS = 'GET_TXNS'
 export const LIST_TXNS = 'LIST_TXNS'
+
+export const GET_ETH_PRICE = 'GET_ETH_PRICE'
+export const SET_ETH_PRICE = 'SET_ETH_PRICE'
