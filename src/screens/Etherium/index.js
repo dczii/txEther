@@ -11,10 +11,10 @@ import { Spinner } from 'native-base';
 import { connect } from 'react-redux';
 import _ from 'lodash'
 
-import { Header, InputAddress, Logs, Modal } from '../Components'
-import { getExchangeRate, fetchEthBalance, fetchTransactions } from '../redux/action'
+import { Header, InputAddress, Logs, Modal } from '../../Components'
+import { getExchangeRate, fetchEthBalance, fetchTransactions } from '../../redux/action'
 
-class Home extends Component {
+class Etherium extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -191,7 +191,7 @@ const mapActionToProps = {
   fetchEthBalance,
   fetchTransactions
 };
-export default connect(mapStateToProps,mapActionToProps)(Home);
+export default connect(mapStateToProps,mapActionToProps)(Etherium);
 
 const styles = StyleSheet.create({
   container: {

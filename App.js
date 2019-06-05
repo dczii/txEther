@@ -1,5 +1,5 @@
 import React from 'react';
-import { AsyncStorage, View, Text, SafeAreaView } from 'react-native';
+import { AsyncStorage, View, StatusBar, SafeAreaView } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { persistReducer } from 'redux-persist';
@@ -26,6 +26,10 @@ export default function App(props) {
   return (
       <Provider store ={store}>
         <SafeAreaView />
+        <StatusBar
+          backgroundColor='white'
+          barStyle='light-content'
+        />
         <AppContainer />
       </Provider>
     );
