@@ -22,7 +22,7 @@ const Drawer = createStackNavigator(
         screen: CoinChecker
       }
     }, {
-      initialRouteName: "Home",
+      initialRouteName: 'CoinChecker',
       headerMode: 'none'
     }
   );

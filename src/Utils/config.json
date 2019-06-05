@@ -1,4 +1,5 @@
 {
     "API_KEY": "NRBKRGEHIURWGRFC7CSUM1PVPICNP6Y15Y",
-    "URL": "https://api.etherscan.io/api?"
+    "URL": "https://api.etherscan.io/api?",
+    "NOMICS_API": "c6f9f41da04498ad9105020c585c449c"
 }

@@ -1,3 +1,5 @@
+export const SET_LOADING = 'SET_LOADING'
+
 export const GET_EXCHANGE_RATE = 'GET_EXCHANGE_RATE'
 export const SET_EXCHANGE_RATE = 'SET_EXCHANGE_RATE' 
 
@@ -10,3 +12,6 @@ export const LIST_TXNS = 'LIST_TXNS'
 
 export const GET_ETH_PRICE = 'GET_ETH_PRICE'
 export const SET_ETH_PRICE = 'SET_ETH_PRICE'
+
+export const FETCH_COIN_PRICES = 'FETCH_COIN_PRICES'
+export const SET_COIN_PRICES = 'SET_COIN_PRICES'

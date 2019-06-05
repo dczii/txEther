@@ -1,4 +1,5 @@
 import {
+    SET_LOADING,
     GET_EXCHANGE_RATE,
     SET_EXCHANGE_RATE,
     GET_ETH_BALANCE,
@@ -17,6 +18,9 @@ import {
 
 export default (state = initialState, action) => {
   switch(action.type) {
+
+        case SET_LOADING:
+        return { ...state, loading: action.payload }
 
         case GET_EXCHANGE_RATE:
             return { ...state, loading: true }
