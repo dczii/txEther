@@ -19,6 +19,7 @@ function Header(props) {
     let convertedEth = formatEth(ethBalance)
     let balance = convertedEth * _.get(rates, currency)
 
+    let stringFormat = formattedCurrency(balance, currency)
     // Set currencySelection for Picker
     let currencySelection = []
     _.mapKeys(props.rates, (value, key) => currencySelection.push({'label': key, 'value': key}))
@@ -31,12 +32,12 @@ function Header(props) {
       :
         <TouchableOpacity style={styles.currencyContainer}>
           <Picker
-            onItemChange={() => handlePicker()}
+            onItemChange={(val) => handlePicker(val)}
             items={currencySelection}
             title="Select Local Currency"
-            placeholder={formattedCurrency(balance, currency)}
+            placeholder={stringFormat}
             placeholderStyle={styles.content}
-            item={pickedData}
+            item={null}
             isNullable
           />
           <Icon type='FontAwesome' name='caret-down' style={{ fontSize: 20, color: '#FFF' }} />

@@ -18,14 +18,10 @@ class Home extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      loading: false,
       showError: false,
       txnType: '',
       ethAddress: '',
-      ethBalance: 0,
       currency: 'USD',
-      rates: {},
-      addressTxns: [],
       showModal: false,
       selectedTxn: {},
       sortBy: ''
@@ -100,8 +96,6 @@ class Home extends Component {
       showError,
       addressTxns,
     } = this.props.global
-
-    console.log(this.props.global)
 
     return (
       <SafeAreaView style={styles.container}>
