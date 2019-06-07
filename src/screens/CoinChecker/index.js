@@ -22,13 +22,14 @@ function CoinChecker(props) {
     function renderItems(data,idx) {
         return(
             <View key={idx} style={styles.coinItemContainer}>
-                <Text>{data.currency} - {data.price}</Text>
+                <Text>{data.name} - {data.currency} - {data.price}</Text>
             </View>
         )
     }
 
 
     let { priceList } = props.coinData
+    console.log(priceList)
     return (
         <ScrollView contentContainerStyle={styles.container}>
                 
@@ -60,12 +61,11 @@ const styles = StyleSheet.create({
        paddingVertical: 20,
    },
    coinItemContainer: {
-       width: '90%',
+       width: '100%',
        flex: 1,
        padding: 20,
-       borderWidth: 1,
-       borderColor: 'rgba(255,255,255,0.5)',
-       borderRadius: 4,
+       borderBottomWidth: 1,
+       borderBottomColor: 'rgba(255,255,255,0.5)',
        marginVertical: 5,
        alignItems: 'center'
    }
