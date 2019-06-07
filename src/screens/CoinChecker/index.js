@@ -5,7 +5,7 @@ import {
     Text,
     ScrollView,
     FlatList,
-    TouchableOpacity,
+    SectionList,
 } from 'react-native';
 import { connect } from 'react-redux';
 import moment from 'moment'
@@ -29,12 +29,14 @@ function CoinChecker(props) {
 
 
     let { priceList } = props.coinData
-    console.log(priceList)
     return (
         <ScrollView contentContainerStyle={styles.container}>
-            {_.map(priceList, (item,idx) => {
-                return renderItems(item,idx)
-            })}
+                
+                <SectionList
+                    sections={priceList}
+                    renderItem={({item, index, section}) => renderItems(item,index)}
+                    keyExtractor={(item, index) => item + index}
+                />
         </ScrollView>
     );
 }
@@ -58,7 +60,8 @@ const styles = StyleSheet.create({
        paddingVertical: 20,
    },
    coinItemContainer: {
-       width: '60%',
+       width: '90%',
+       flex: 1,
        padding: 20,
        borderWidth: 1,
        borderColor: 'rgba(255,255,255,0.5)',
