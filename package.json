@@ -10,7 +10,7 @@
     "axios": "^0.19.0",
     "buffer": "^5.2.1",
     "ethjs-unit": "^0.1.6",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "moment": "^2.24.0",
     "native-base": "^2.12.1",
     "numeral": "^2.0.6",
